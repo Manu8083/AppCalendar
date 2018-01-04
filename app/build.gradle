@@ -26,4 +26,7 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
     implementation files('/Users/manutromero/Documents/Universidad/Sexto Semestre/PlataformasMoviles2/Actividad3/Aplicacion/Librerias/mysql-connector-java-5.1.45/mysql-connector-java-5.1.45-bin.jar')
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+
+
 }
