@@ -7,9 +7,11 @@ import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -29,14 +31,34 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        Button mick;
-        mick = (Button)findViewById(R.id.conectarDB);
+        Button Conectar,Consultar, Guardar;
+        Conectar = (Button)findViewById(R.id.conectarDB);
+        Consultar = (Button)findViewById(R.id.conectarDB2);
+        Guardar = (Button)findViewById(R.id.conectarDB3);
 
-        mick.setOnClickListener(new View.OnClickListener(){
+        Consultar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+            }
+        });
+
+        Guardar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+        Conectar.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+
+                String Datafecha, DataAsunto, DataActividad, ReciveDataFecha, ReciveDataAsunto, ReciveDataActividad;
+                EditText editFecha, editAsunto, editActividad;
                 TextView PrintData, PrintAsunto, PrintActividad;
-                String Datafecha, DataAsunto, DataActividad;
+                PreparedStatement psInsertar;
+
 
                 BDConnection BDConnection = new BDConnection(); // se crea la instacia de la clase que tiene el codigo de conexion
                 Connection conexion = BDConnection.BDConnection(); //Se ejecuta la funcion de conectar.
@@ -46,11 +68,19 @@ public class MainActivity extends AppCompatActivity {
                         Statement sentencia = conexion.createStatement();
                         ResultSet rs = sentencia.executeQuery("SELECT * FROM Agenda;");
 
-                        while (rs.next()){
-                            //LayoutInflater inflater = LayoutInflater.from();
-                            int id = R.layout.activity_main;
-                            //RelativeLayout relativeLayout = (RelativeLayout) inflater.inflate(id, null, false);
+                        editFecha = (EditText)findViewById(R.id.editFecha);
+                        editAsunto = (EditText)findViewById(R.id.editAsunto);
+                        editActividad = (EditText)findViewById(R.id.editActividad);
 
+                        ReciveDataFecha = editFecha.getText().toString();
+                        ReciveDataAsunto = editAsunto.getText().toString();
+                        ReciveDataActividad = editActividad.getText().toString();
+
+
+                        psInsertar = conexion.prepareStatement("INSERT Android_App.Agenda (fecha,asunto,actividad) values (" + "'" + ReciveDataFecha + "'" + "," + "'" + ReciveDataAsunto + "'" + "," + "'" + ReciveDataActividad + "'" + ");");
+                        psInsertar.executeUpdate();
+
+                        while (rs.next()){
 
                             Datafecha = rs.getString(2);
                             DataAsunto = rs.getString(3);
@@ -60,7 +90,6 @@ public class MainActivity extends AppCompatActivity {
                             PrintAsunto = (TextView)findViewById(R.id.ViewAsunto);
                             PrintActividad = (TextView)findViewById(R.id.ViewActividad);
 
-                            //PrintData = (TextView) relativeLayout.findViewById(R.id.ViewFecha);
 
                             PrintData.setText(Datafecha);
                             PrintAsunto.setText(DataAsunto);
@@ -69,6 +98,7 @@ public class MainActivity extends AppCompatActivity {
                             System.out.println(rs.getInt(1) + " " + rs.getString(2) + " " + rs.getString(3) + " " + rs.getString(4));
 
                         }
+
                     }
                     catch (SQLException e){
                         e.printStackTrace();
